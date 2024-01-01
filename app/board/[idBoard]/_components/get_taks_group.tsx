@@ -9,6 +9,7 @@ import { OptionsGroupTask } from "./options_group_task";
 import { TaskFooter } from "./task_footer";
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import { ButtonColapseGroupTask } from "./button_colapse_group_tasks";
 
 interface GetTaksGroupPros {
   boardId: string;
@@ -31,11 +32,11 @@ export const GetTaksGroup = async ({
             <OptionsGroupTask paid={g.paid} idGroup={g.id} boardId={boardId} />
             <div className="w-[98%] ">
               <div className="w-full flex items-center space-x-2">
-                <ChevronDown
-                  className="w-4 h-4"
-                  style={{
-                    color: g.color,
-                  }}
+                <ButtonColapseGroupTask
+                  expanded={g.expanded}
+                  color={g.color}
+                  idBoard={boardId}
+                  idGroup={g.id}
                 />
                 <TitleTasks
                   id={g.id}
@@ -56,18 +57,22 @@ export const GetTaksGroup = async ({
           </div>
           <div className="min-w-[119.25rem]">
             <TaskGroupHead color={g.color} />
-            {g.tasks.map((t, index) => (
-              <Task
-                key={t.id}
-                taks={t}
-                color={g.color}
-                index={index}
-                isLast={index === g.tasks.length}
-                boardUsers={boardUsers}
-                currentUser={userId}
-              />
-            ))}
-            <TaskInputCreate color={g.color} idGroupTasks={g.id} />
+            {g.expanded && (
+              <>
+                {g.tasks.map((t, index) => (
+                  <Task
+                    key={t.id}
+                    taks={t}
+                    color={g.color}
+                    index={index}
+                    isLast={index === g.tasks.length}
+                    boardUsers={boardUsers}
+                    currentUser={userId}
+                  />
+                ))}
+                <TaskInputCreate color={g.color} idGroupTasks={g.id} />
+              </>
+            )}
             <TaskFooter tasks={g.tasks} color={g.color} />
           </div>
         </div>

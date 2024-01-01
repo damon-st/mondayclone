@@ -11,7 +11,7 @@ export async function PUT(req: Request) {
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    const { idTaks, boardId, title, paid } = await req.json();
+    const { idTaks, boardId, title, paid, expanded } = await req.json();
     if (!idTaks || !boardId) {
       return new NextResponse("Params not found", { status: 404 });
     }
@@ -43,6 +43,7 @@ export async function PUT(req: Request) {
       data: {
         title,
         paid,
+        expanded,
       },
     });
     return NextResponse.json(
