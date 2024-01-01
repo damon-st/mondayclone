@@ -1,0 +1,257 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model SpaceWork {
+  id              String  @id @default(cuid()) @map("_id")
+  imageProfile    String?
+  imageBackground String?
+  nameWork        String
+  descriptionWork String
+
+  usersIds String[]
+  users    Users[]  @relation(fields: [usersIds], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  board     Board[]
+
+  @@index([usersIds])
+}
+
+model Board {
+  id        String    @id @default(cuid()) @map("_id")
+  title     String
+  favorite  Boolean   @default(false)
+  privacity Privacity @default(public)
+
+  userId      String
+  description String @default("Gestiona cualquier tipo de proyecto. Asigna responsables, establece plazos y haz el seguimiento del estado de tu proyecto.")
+
+  spaceWorkId String
+  space       SpaceWork @relation(fields: [spaceWorkId], references: [id])
+
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  boardUser  BoardUser[]
+  groupTasks GroupTasks[]
+
+  @@index([spaceWorkId])
+}
+
+model GroupTasks {
+  id String @id @default(cuid()) @map("_id")
+
+  title    String
+  color    String
+  expanded Boolean        @default(true)
+  paid     PaidGroupTask?
+
+  boardId String
+  board   Board  @relation(fields: [boardId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tasks     Tasks[]
+
+  @@index([boardId])
+}
+
+type PaidGroupTask {
+  paid      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Tasks {
+  id String @id @default(cuid()) @map("_id")
+
+  title String
+
+  userId  String
+  userRes Users  @relation(fields: [userId], references: [id])
+
+  groupTaskId String
+  groupTask   GroupTasks @relation(fields: [groupTaskId], references: [id], onDelete: Cascade)
+
+  dateInit DateTime  @default(now())
+  dateEnd  DateTime?
+
+  status   StatusTaks @default(notInit)
+  priority Priority   @default(none)
+  notes    String     @default("")
+  budget   Float      @default(0)
+
+  schedule           Schedule?
+  conversationsTasks ConversationsTasks[]
+  files              Files[]
+  activityTasks      ActivityBoard[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([groupTaskId])
+}
+
+model Files {
+  id String @id @default(cuid()) @map("_id")
+
+  url       String
+  extension String
+  name      String?
+
+  taskId String
+  task   Tasks  @relation(fields: [taskId], references: [id])
+
+  userId String
+  user   Users  @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([taskId])
+  @@index([userId])
+}
+
+model ConversationsTasks {
+  id String @id @default(cuid()) @map("_id")
+
+  description String
+
+  taskId String
+  task   Tasks  @relation(fields: [taskId], references: [id])
+
+  userId String
+  user   Users  @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([taskId, userId])
+}
+
+model BoardUser {
+  id String @id @default(cuid()) @map("_id")
+
+  boardId String
+  board   Board  @relation(fields: [boardId], references: [id])
+
+  userId String
+  user   Users  @relation(references: [id], fields: [userId])
+
+  permitions PermitionsBoard @default(readAndWrite)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([boardId, userId])
+}
+
+model ActivityBoard {
+  id String @id @default(uuid()) @map("_id")
+
+  userId String
+  user   Users  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  taskId String
+  task   Tasks  @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  typeActivity String
+
+  previusValue ActivityBoardPrevius?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([taskId])
+  @@index([userId])
+}
+
+type ActivityBoardPrevius {
+  previusValue ActivityBoardValues?
+  actualValue  ActivityBoardValues?
+}
+
+type ActivityBoardValues {
+  title    String?
+  userId   String?
+  dateInit DateTime?
+  status   StatusTaks?
+  priority Priority?
+  notes    String?
+  budget   Float?
+  schedule Schedule?
+}
+
+model Users {
+  id     String  @id @default(uuid()) @map("_id")
+  userId String  @unique
+  name   String
+  email  String
+  photo  String?
+
+  boardId            String?
+  boardUser          BoardUser[]
+  tasks              Tasks[]
+  conversationsTasks ConversationsTasks[]
+
+  spacesWorksId String[]
+  spacesWorks   SpaceWork[]     @relation(fields: [spacesWorksId], references: [id])
+  files         Files[]
+  activityBoard ActivityBoard[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([spacesWorksId])
+}
+
+model SharedBoard {
+  id      String @id @default(uuid()) @map("_id")
+  userId  String
+  boardId String
+
+  permitions PermitionsBoard @default(read)
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+}
+
+type Schedule {
+  dateInit DateTime
+  dateEnd  DateTime
+}
+
+enum Privacity {
+  public
+  private
+  shared
+}
+
+enum PermitionsBoard {
+  read
+  write
+  readAndWrite
+}
+
+enum StatusTaks {
+  notInit
+  stop
+  inProgress
+  completed
+}
+
+enum Priority {
+  none
+  slow
+  midle
+  higth
+  critical
+}
