@@ -244,6 +244,7 @@ function calcularPrecio(valorPorHora: number, tiempoTrabajado: number) {
   const horas = Math.floor(tiempoTrabajado / 60); // Obtener las horas completas
   const minutos = tiempoTrabajado % 60; // Obtener los minutos restantes
 
-  const precioTotal = valorPorHora * horas + (valorPorHora / 60) * minutos;
+  let precioTotal = valorPorHora * horas + (valorPorHora / 60) * minutos;
+  precioTotal = precioTotal < 1 ? 1 : precioTotal;
   return parseFloat(precioTotal.toFixed(2));
 }
