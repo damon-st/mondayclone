@@ -9,6 +9,7 @@ export const getGroupTaskByBoardId = (boardId: string) => {
       tasks: {
         include: {
           files: true,
+          tasksTimesWorks: true,
         },
       },
     },

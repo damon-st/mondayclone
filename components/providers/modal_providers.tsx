@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { SharedBoardModal } from "../modals/shared_board_modal";
 import { UploadFileModal } from "../modals/upload_file_modal";
 import { ModalActivitysTasks } from "../modals/modal_activitys_tasks";
+import { ModalTimesWorksTask } from "../modals/times-works-task-modal";
 
 export const ModalProvider = () => {
   const [mounted, setMounted] = useState(false);
@@ -21,6 +22,7 @@ export const ModalProvider = () => {
       <SharedBoardModal />
       <UploadFileModal />
       <ModalActivitysTasks />
+      <ModalTimesWorksTask />
     </>
   );
 };

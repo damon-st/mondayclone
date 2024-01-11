@@ -49,8 +49,10 @@ export const TaskLastActivity = ({ idTask, title }: TaskLastActivityProps) => {
   };
 
   return (
-    <div className="w-[10.4rem] h-10 border-r border-grisHover flex items-center justify-center">
-      {isPending && <Skeleton className="w-[90%] h-[80%] rounded-sm" />}
+    <div className="w-[10.4rem] relative h-10 border-r border-grisHover flex items-center justify-center">
+      {isPending && (
+        <Skeleton className="w-[90%] h-[80%] rounded-sm absolute" />
+      )}
       {activity && (
         <CustomToolpip
           side="left"

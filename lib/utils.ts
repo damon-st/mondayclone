@@ -216,3 +216,29 @@ export function getTypeActivityBoardTXT(value: TypeActivityBoard) {
   }
   return txt;
 }
+export function calculePriceWithMinutes(
+  valorPorHora: number,
+  tiempoTrabajado: number
+) {
+  if (typeof valorPorHora !== "number" || valorPorHora < 0) {
+    throw new Error("El valor por hora debe ser un número positivo.");
+  }
+
+  if (typeof tiempoTrabajado !== "number" || tiempoTrabajado < 0) {
+    throw new Error("El tiempo trabajado debe ser un número positivo.");
+  }
+
+  const horas = Math.floor(tiempoTrabajado / 60); // Obtener las horas completas
+  const minutos = tiempoTrabajado % 60; // Obtener los minutos restantes
+
+  let precioTotal = valorPorHora * horas + (valorPorHora / 60) * minutos;
+  precioTotal = precioTotal < 1 ? 1 : precioTotal;
+  return parseFloat(precioTotal.toFixed(2));
+}
+export function formatMinutesToHm(minutos: number) {
+  const horas = Math.floor(minutos / 60);
+  const minutosRestantes = minutos % 60;
+
+  const formato = `${horas}h ${minutosRestantes}min`;
+  return formato;
+}

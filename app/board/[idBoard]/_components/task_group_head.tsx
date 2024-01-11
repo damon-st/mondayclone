@@ -49,6 +49,9 @@ export const TaskGroupHead = ({ color }: TaskGroupHeadPros) => {
             <div className="w-[10.4rem] flex items-center h-10 border-r border-grisHover justify-center">
               <p className="text-sm">Ultima actualizacion</p>
             </div>
+            <div className="w-[10.4rem] flex items-center h-10 border-r border-grisHover justify-center">
+              <p className="text-sm">Tiempo Trabajo</p>
+            </div>
           </div>
         </div>
       </div>

@@ -11,7 +11,7 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
     const { task } = await req.json();
-    const { id, createdAt, title, files, ...restData } = task;
+    const { id, createdAt, title, files, tasksTimesWorks, ...restData } = task;
     const taskCreate = await db.tasks.create({
       data: {
         ...restData,

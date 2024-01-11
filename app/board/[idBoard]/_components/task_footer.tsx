@@ -3,15 +3,20 @@ import { colorStatusTasks } from "@/constants/constants";
 import {
   calculePercentagePriorityTasks,
   calculePercentageStatusTasks,
+  calculePriceWithMinutes,
   formatDate,
+  formatMinutesToHm,
   formatPrice,
 } from "@/lib/utils";
 import { CalculePercentageI } from "@/models/calcule_percentage";
-import { StatusTaks, Tasks } from "@prisma/client";
+import { StatusTaks, Tasks, TasksTimesWorks } from "@prisma/client";
+import { differenceInMinutes } from "date-fns";
 
 interface TaskFooterProps {
   color: string;
-  tasks: Tasks[];
+  tasks: (Tasks & {
+    tasksTimesWorks: TasksTimesWorks[];
+  })[];
 }
 export const TaskFooter = ({ color, tasks }: TaskFooterProps) => {
   let fecha = "";
@@ -20,6 +25,8 @@ export const TaskFooter = ({ color, tasks }: TaskFooterProps) => {
   let groupPriority: Array<CalculePercentageI> = [];
 
   let total = "0";
+
+  let tasksTimesWorks = "";
 
   if (tasks.length > 0) {
     fecha = formatDate(tasks[tasks.length - 1].dateInit, "dd MMM");
@@ -57,6 +64,29 @@ export const TaskFooter = ({ color, tasks }: TaskFooterProps) => {
         dateEnd[dateEnd.length - 1],
         "dd MMM"
       )}`;
+    }
+    let priceT = 0;
+    let minutes = 0;
+    for (const t of tasks) {
+      const f = t.tasksTimesWorks.filter((v) => v.timeEnd);
+      const value = f.reduce(
+        (pre, acc) => {
+          const minutes = differenceInMinutes(acc.timeEnd!, acc.timeInit);
+          const price = calculePriceWithMinutes(
+            5,
+            differenceInMinutes(acc.timeEnd!, acc.timeInit)
+          );
+
+          return { price: pre.price + price, minute: pre.minute + minutes };
+        },
+        { price: 0, minute: 0 }
+      );
+      priceT += value.price;
+      minutes += value.minute;
+    }
+
+    if (priceT > 0) {
+      tasksTimesWorks = `$${formatPrice(priceT)} ${formatMinutesToHm(minutes)}`;
     }
   }
 
@@ -124,6 +154,9 @@ export const TaskFooter = ({ color, tasks }: TaskFooterProps) => {
           </div>
         </div>
         <div className="w-[10.4rem] h-10 border-b border-gris border-r border-l shadow-sm rounded-r-sm"></div>
+        <div className="w-[10.4rem] h-10 border-b border-gris border-r border-l shadow-sm rounded-r-sm flex items-center justify-center">
+          {tasksTimesWorks}
+        </div>
       </div>
     </div>
   );

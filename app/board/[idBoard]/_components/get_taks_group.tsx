@@ -55,7 +55,7 @@ export const GetTaksGroup = async ({
               </div>
             </div>
           </div>
-          <div className="min-w-[119.25rem]">
+          <div className="min-w-[129.7rem]">
             <TaskGroupHead color={g.color} />
             {g.expanded && (
               <>

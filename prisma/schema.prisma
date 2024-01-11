@@ -93,12 +93,28 @@ model Tasks {
   conversationsTasks ConversationsTasks[]
   files              Files[]
   activityTasks      ActivityBoard[]
+  tasksTimesWorks    TasksTimesWorks[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@index([groupTaskId])
+}
+
+model TasksTimesWorks {
+  id String @id @default(cuid()) @map("_id")
+
+  timeInit DateTime
+  timeEnd  DateTime?
+
+  taskId String
+  task   Tasks  @relation(references: [id], fields: [taskId], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([taskId])
 }
 
 model Files {

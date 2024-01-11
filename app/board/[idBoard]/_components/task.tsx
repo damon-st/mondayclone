@@ -2,7 +2,7 @@
 
 import { CustomToolpip } from "@/components/custom_toltip";
 import { cn } from "@/lib/utils";
-import { BoardUser, Files, Tasks } from "@prisma/client";
+import { BoardUser, Files, Tasks, TasksTimesWorks } from "@prisma/client";
 import { MessageSquarePlusIcon, Square } from "lucide-react";
 import { TaskMenuOptions } from "./task_menu_options";
 import { TaskTitleInput } from "./task_title_input";
@@ -15,10 +15,12 @@ import { TaskBudget } from "./task_budget";
 import { TaskFile } from "./task_file";
 import { TaskSchedule } from "./task_schedule";
 import { TaskLastActivity } from "./task_last_activity";
+import { TaskTimeWorks } from "./task_time_work";
 
 interface TaskProps {
   taks: Tasks & {
     files: Files[];
+    tasksTimesWorks: TasksTimesWorks[];
   };
   color: string;
   index: number;
@@ -91,6 +93,10 @@ export const Task = ({
             />
             <TaskSchedule idTask={taks.id} schedule={taks.schedule} />
             <TaskLastActivity title={taks.title} idTask={taks.id} />
+            <TaskTimeWorks
+              tasksTimesWorks={taks.tasksTimesWorks}
+              taskId={taks.id}
+            />
           </div>
         </div>
       </div>

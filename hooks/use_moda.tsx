@@ -1,11 +1,12 @@
-import { Files } from "@prisma/client";
+import { Files, TasksTimesWorks } from "@prisma/client";
 import { create } from "zustand";
 
 export type ModalType =
   | "createTablero"
   | "sharedBoard"
   | "uploadFile"
-  | "activityTasks";
+  | "activityTasks"
+  | "timesWorkTask";
 
 interface DataModal {
   idSpaceWork?: string;
@@ -13,6 +14,7 @@ interface DataModal {
   idTask?: string;
   files?: Files[];
   titleTask?: string;
+  timesWokrs?: TasksTimesWorks[];
 }
 
 interface ModalStore {

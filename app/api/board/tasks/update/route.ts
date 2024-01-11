@@ -1,4 +1,5 @@
 import { db } from "@/lib/db/prisma_db";
+import { calculePriceWithMinutes } from "@/lib/utils";
 import { ResponseModel } from "@/models/response_model";
 import { TypeActivityBoard } from "@/models/types";
 import { auth } from "@clerk/nextjs";
@@ -124,7 +125,10 @@ export async function PUT(req: Request) {
       if (status === StatusTaks.completed) {
         dateEnd = new Date();
 
-        budget = calcularPrecio(5, differenceInMinutes(dateEnd, task.dateInit));
+        budget = calculePriceWithMinutes(
+          5,
+          differenceInMinutes(dateEnd, task.dateInit)
+        );
       }
       typeActivity = TypeActivityBoard.status;
       previusValueM = {
@@ -231,20 +235,4 @@ export async function PUT(req: Request) {
 
     return new NextResponse("Internal error", { status: 500 });
   }
-}
-function calcularPrecio(valorPorHora: number, tiempoTrabajado: number) {
-  if (typeof valorPorHora !== "number" || valorPorHora < 0) {
-    throw new Error("El valor por hora debe ser un número positivo.");
-  }
-
-  if (typeof tiempoTrabajado !== "number" || tiempoTrabajado < 0) {
-    throw new Error("El tiempo trabajado debe ser un número positivo.");
-  }
-
-  const horas = Math.floor(tiempoTrabajado / 60); // Obtener las horas completas
-  const minutos = tiempoTrabajado % 60; // Obtener los minutos restantes
-
-  let precioTotal = valorPorHora * horas + (valorPorHora / 60) * minutos;
-  precioTotal = precioTotal < 1 ? 1 : precioTotal;
-  return parseFloat(precioTotal.toFixed(2));
 }
