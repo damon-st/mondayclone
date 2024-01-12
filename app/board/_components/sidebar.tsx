@@ -20,7 +20,7 @@ interface SidebarProps {
 
 export const Sidebar = ({ spacesWorks }: SidebarProps) => {
   return (
-    <div className="w-[15%] h-full bg-white rounded-r-lg">
+    <div className="w-full h-full bg-white rounded-r-lg">
       <div className="w-full p-2">
         <Link
           href={"/board"}

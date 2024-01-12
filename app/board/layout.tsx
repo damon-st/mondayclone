@@ -44,11 +44,13 @@ export default async function BoardLayout({
 
   return (
     <div className="w-full h-full bg-gris">
-      <Header />
+      <Header spacesWorks={spacesWorks} />
       <div className="w-full h-[93%] flex">
-        <Sidebar spacesWorks={spacesWorks} />
+        <div className="w-[15%] hidden md:block">
+          <Sidebar spacesWorks={spacesWorks} />
+        </div>
         <div className="w-[1%]"></div>
-        <section className="w-[84%] h-full">{children}</section>
+        <section className="w-[99%] md:w-[84%] h-full">{children}</section>
       </div>
     </div>
   );

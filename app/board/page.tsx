@@ -11,8 +11,8 @@ export default async function BoardPage() {
     <div className="bg-[#f6f7fb] rounded-l-lg w-full h-full relative">
       <div className="w-full h-[10%] bg-white rounded-l-lg flex items-center">
         <div className="w-[70%] h-full flex items-center justify-center">
-          <div className="w-[60%] p-2">
-            <h2 className="text-lg">
+          <div className="w-full md:w-[60%] p-2">
+            <h2 className="text-xs md:text-lg">
               {msg}
               {user?.firstName}!
             </h2>
@@ -21,7 +21,7 @@ export default async function BoardPage() {
               espacios de trabajo
             </p>
           </div>
-          <div className="w-[40%] h-full relative">
+          <div className="hidden md:block w-[40%] h-full relative">
             <Image
               width={300}
               height={600}
@@ -31,7 +31,7 @@ export default async function BoardPage() {
             />
           </div>
         </div>
-        <div className="w-[30%] h-full flex items-center justify-center gap-x-2">
+        <div className="hidden md:flex w-[30%] h-full  items-center justify-center gap-x-2">
           <div className="flex gap-x-1">
             <MessageSquare className="w-4 h-4" />
             <p className="text-sm">Dejar comentarios</p>
@@ -43,7 +43,7 @@ export default async function BoardPage() {
         </div>
       </div>
       <div className="w-full h-[89%] p-4 flex">
-        <div className="w-[70%] bg-white h-[90%] rounded-lg">
+        <div className="w-full md:w-[70%] bg-white h-[90%] rounded-lg">
           <GetWorksSpaces userId={user?.id ?? ""} />
         </div>
       </div>

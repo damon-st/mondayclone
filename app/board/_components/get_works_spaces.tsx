@@ -20,7 +20,7 @@ export const GetWorksSpaces = async ({ userId }: GetWorksSpacesProps) => {
           <Info className="w-4 h-4" />
         </CustomToolpip>
       </div>
-      <div className="w-full grid grid-cols-2 gap-2 mt-2">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
         {spacesWorks.map((v) => (
           <Link
             key={v.id}
