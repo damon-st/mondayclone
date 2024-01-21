@@ -34,6 +34,9 @@ export default async function BoardId({
           boardId={board.id}
           favorite={board.favorite}
           title={board.title}
+          createdUser={board.userId}
+          createdAt={board.createdAt}
+          nameSpace={board.space.nameWork}
         />
       </div>
       <div className="w-full h-[85%]">

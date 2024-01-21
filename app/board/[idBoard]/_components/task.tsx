@@ -16,6 +16,7 @@ import { TaskFile } from "./task_file";
 import { TaskSchedule } from "./task_schedule";
 import { TaskLastActivity } from "./task_last_activity";
 import { TaskTimeWorks } from "./task_time_work";
+import { useModal } from "@/hooks/use_moda";
 
 interface TaskProps {
   taks: Tasks & {
@@ -37,10 +38,22 @@ export const Task = ({
   boardUsers,
   currentUser,
 }: TaskProps) => {
+  const { onOpen } = useModal();
   const isFirst = index === 0;
   const canSelectFiles =
     boardUsers.find((v) => v.userId === currentUser)?.permitions ===
     "readAndWrite";
+
+  const onOpenConversation = () => {
+    onOpen("conversationTask", {
+      taskConversationM: {
+        idTask: taks.id,
+        title: taks.title,
+        boardUsers: boardUsers,
+      },
+    });
+  };
+
   return (
     <div className="w-full flex items-center group ">
       <div className="w-[2.2rem] h-full flex items-center justify-center">
@@ -62,11 +75,18 @@ export const Task = ({
             </div>
             <div className="w-[20.7rem] flex items-center h-10">
               <div className="w-[80%] border-r border-grisHover h-10 flex items-center justify-center">
-                <TaskTitleInput idTask={taks.id} title={taks.title} />
+                <TaskTitleInput
+                  onOpenConversation={onOpenConversation}
+                  idTask={taks.id}
+                  title={taks.title}
+                />
               </div>
               <div className="w-[20%] border-r border-grisHover h-10 flex items-center justify-center">
                 <CustomToolpip msg="Iniciar conversacion">
-                  <MessageSquarePlusIcon className="w-4 h-4 cursor-pointer hover:text-azul" />
+                  <MessageSquarePlusIcon
+                    onClick={onOpenConversation}
+                    className="w-4 h-4 cursor-pointer hover:text-azul"
+                  />
                 </CustomToolpip>
               </div>
             </div>

@@ -5,19 +5,35 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import { ChevronRight, Maximize2 } from "lucide-react";
-import { ElementRef, FormEvent, useRef, useState, useTransition } from "react";
+import {
+  ElementRef,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import toast from "react-hot-toast";
 
 interface TaskTitle {
   idTask: string;
   title: string;
+  onOpenConversation: () => void;
 }
 
-export const TaskTitleInput = ({ idTask, title }: TaskTitle) => {
-  const [value, setValue] = useState(title);
+export const TaskTitleInput = ({
+  idTask,
+  title,
+  onOpenConversation,
+}: TaskTitle) => {
+  const [value, setValue] = useState("");
   const [focus, setFocus] = useState(false);
   const [isPending, startTransition] = useTransition();
   const inputRef = useRef<ElementRef<"input">>(null);
+
+  useEffect(() => {
+    setValue(title);
+  }, [title]);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -74,7 +90,10 @@ export const TaskTitleInput = ({ idTask, title }: TaskTitle) => {
         )}
       >
         <CustomToolpip msg="Abrir pagina de tarea">
-          <div className="hidden group-hover:flex spx1  items-center justify-center rounded-sm p-1 hover:bg-grisHover cursor-pointer ">
+          <div
+            onClick={onOpenConversation}
+            className="hidden group-hover:flex spx1  items-center justify-center rounded-sm p-1 hover:bg-grisHover cursor-pointer "
+          >
             <Maximize2 className="w-4 h-4 text-gray-500" />
             <p className="text-gray-500 text-xs">Abrir</p>
           </div>

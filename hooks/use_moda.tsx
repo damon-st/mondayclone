@@ -1,4 +1,10 @@
-import { Files, GroupTasks, TasksTimesWorks, Users } from "@prisma/client";
+import {
+  BoardUser,
+  Files,
+  GroupTasks,
+  TasksTimesWorks,
+  Users,
+} from "@prisma/client";
 import { create } from "zustand";
 
 export type ModalType =
@@ -7,7 +13,25 @@ export type ModalType =
   | "uploadFile"
   | "activityTasks"
   | "timesWorkTask"
-  | "settingsGroupTasks";
+  | "settingsGroupTasks"
+  | "infoBoard"
+  | "conversationTask";
+
+interface BoardInfoM {
+  boardUser: BoardUser[];
+  boardId: string;
+  title: string;
+  description: string;
+  createdUser: string;
+  createdAt: Date;
+  nameSpace: string;
+}
+
+interface TaskConversationM {
+  idTask: string;
+  title: string;
+  boardUsers: BoardUser[];
+}
 
 interface DataModal {
   idSpaceWork?: string;
@@ -18,6 +42,8 @@ interface DataModal {
   timesWokrs?: TasksTimesWorks[];
   usersBoard?: Users[];
   groupTasks?: GroupTasks;
+  boardInfo?: BoardInfoM;
+  taskConversationM?: TaskConversationM;
 }
 
 interface ModalStore {

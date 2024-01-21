@@ -66,7 +66,7 @@ export const TaskInputCreate = ({
                   ref={inputRef}
                   onChange={(e) => setValue(e.target.value)}
                   value={value}
-                  className="w-auto p-0 focus:w-[50%] border-transparent outline-none hover:border-grisHover focus:border-transparent focus:ring-0 focus:ring-offset-0 focus-visible:ring-grisHover"
+                  className="w-auto p-0 m-0 focus:w-full focus:m-0 focus:p-0 border-transparent outline-none hover:border-grisHover focus:border-transparent focus:ring-0 focus:ring-offset-0 focus-visible:ring-grisHover"
                   placeholder="+Agregar Tarea"
                 />
               </form>

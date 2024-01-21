@@ -25,6 +25,7 @@ export const getBoardByIdAndUsers = (idBoard: string) => {
     },
     include: {
       boardUser: true,
+      space: true,
     },
   });
 };

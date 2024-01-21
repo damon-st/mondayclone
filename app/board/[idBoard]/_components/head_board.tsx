@@ -35,6 +35,9 @@ interface HeadProps {
   favorite: boolean;
   usersLength: number;
   boardUser: BoardUser[];
+  createdUser: string;
+  createdAt: Date;
+  nameSpace: string;
 }
 
 const formSchema = z.object({
@@ -48,6 +51,9 @@ export const HeadBoard = ({
   description,
   usersLength,
   boardUser,
+  createdAt,
+  createdUser,
+  nameSpace,
 }: HeadProps) => {
   const [isPending, startTransition] = useTransition();
   const [usersBoard, setUsersBoard] = useState<Users[]>([]);
@@ -77,6 +83,10 @@ export const HeadBoard = ({
       }
     });
   }, [boardUser]);
+
+  useEffect(() => {
+    form.setValue("title", title);
+  }, [form, title]);
 
   const { isSubmitting } = form.formState;
 
@@ -129,6 +139,20 @@ export const HeadBoard = ({
     });
   };
 
+  const onInfoBoard = () => {
+    onOpen("infoBoard", {
+      boardInfo: {
+        boardId,
+        boardUser,
+        createdAt,
+        createdUser,
+        description,
+        title,
+        nameSpace,
+      },
+    });
+  };
+
   return (
     <div className="w-full h-full">
       <div className="w-full h-[70%] flex items-center">
@@ -152,7 +176,10 @@ export const HeadBoard = ({
                       </FormControl>
                       <div className="flex items-center space-x-2 ml-2">
                         <CustomToolpip msg="Mostrar la descripción del tablero">
-                          <div className="rounded-sm p-2 hover:bg-grisHover text-black transition duration-200">
+                          <div
+                            onClick={onInfoBoard}
+                            className="rounded-sm p-2 hover:bg-grisHover text-black transition duration-200"
+                          >
                             <Info className="w-4 h-4" />
                           </div>
                         </CustomToolpip>
@@ -183,7 +210,10 @@ export const HeadBoard = ({
               </form>
             </Form>
           </div>
-          <div className="w-full flex items-center space-x-2">
+          <div
+            onClick={onInfoBoard}
+            className="w-full flex items-center space-x-2 cursor-pointer"
+          >
             <div className="w-[70%] flex items-center overflow-hidden">
               <p className="font-normal text-sm whitespace-nowrap">
                 {description}

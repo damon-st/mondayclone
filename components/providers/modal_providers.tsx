@@ -7,6 +7,8 @@ import { UploadFileModal } from "../modals/upload_file_modal";
 import { ModalActivitysTasks } from "../modals/modal_activitys_tasks";
 import { ModalTimesWorksTask } from "../modals/times-works-task-modal";
 import { ModalSettingsGroupTasks } from "../modals/moda_settings_group_tasks";
+import { ModalInfoBoard } from "../modals/modal_info_board";
+import { ModalConversationTasks } from "../modals/modal-conversation_task/modal_conversation_task";
 
 export const ModalProvider = () => {
   const [mounted, setMounted] = useState(false);
@@ -25,6 +27,8 @@ export const ModalProvider = () => {
       <ModalActivitysTasks />
       <ModalTimesWorksTask />
       <ModalSettingsGroupTasks />
+      <ModalInfoBoard />
+      <ModalConversationTasks />
     </>
   );
 };

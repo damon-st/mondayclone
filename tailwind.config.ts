@@ -21,6 +21,7 @@ module.exports = withUt({
       colors: {
         gris: "#eceff8",
         grisHover: "#dcdfec",
+        grisDialog: "#f5f6f8",
         celeste: "#cce5ff",
         azul: "#0073ea",
         border: "hsl(var(--border))",
