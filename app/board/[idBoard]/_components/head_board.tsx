@@ -21,10 +21,12 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { promise, z } from "zod";
 import { TypesUpdateBoard } from "@/models/types";
-import { useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useModal } from "@/hooks/use_moda";
+import { BoardUser, Users } from "@prisma/client";
+import { ResponseModel } from "@/models/response_model";
 
 interface HeadProps {
   title: string;
@@ -32,6 +34,7 @@ interface HeadProps {
   boardId: string;
   favorite: boolean;
   usersLength: number;
+  boardUser: BoardUser[];
 }
 
 const formSchema = z.object({
@@ -44,7 +47,11 @@ export const HeadBoard = ({
   title,
   description,
   usersLength,
+  boardUser,
 }: HeadProps) => {
+  const [isPending, startTransition] = useTransition();
+  const [usersBoard, setUsersBoard] = useState<Users[]>([]);
+
   const [favorite, setFavorite] = useState(favoriteM);
   const { onOpen } = useModal();
 
@@ -55,6 +62,21 @@ export const HeadBoard = ({
       title,
     },
   });
+
+  useEffect(() => {
+    startTransition(async () => {
+      try {
+        const users = await Promise.all(
+          boardUser.map((u) => {
+            return axios.get<ResponseModel<Users>>("/api/user/" + u.userId);
+          })
+        );
+        setUsersBoard([...users.map((e) => e.data.data!)]);
+      } catch (error) {
+        console.log("[ERROR]", error);
+      }
+    });
+  }, [boardUser]);
 
   const { isSubmitting } = form.formState;
 
@@ -103,6 +125,7 @@ export const HeadBoard = ({
   const onShared = () => {
     onOpen("sharedBoard", {
       idBoard: boardId,
+      usersBoard,
     });
   };
 

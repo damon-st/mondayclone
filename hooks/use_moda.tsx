@@ -1,4 +1,4 @@
-import { Files, TasksTimesWorks } from "@prisma/client";
+import { Files, GroupTasks, TasksTimesWorks, Users } from "@prisma/client";
 import { create } from "zustand";
 
 export type ModalType =
@@ -6,7 +6,8 @@ export type ModalType =
   | "sharedBoard"
   | "uploadFile"
   | "activityTasks"
-  | "timesWorkTask";
+  | "timesWorkTask"
+  | "settingsGroupTasks";
 
 interface DataModal {
   idSpaceWork?: string;
@@ -15,6 +16,8 @@ interface DataModal {
   files?: Files[];
   titleTask?: string;
   timesWokrs?: TasksTimesWorks[];
+  usersBoard?: Users[];
+  groupTasks?: GroupTasks;
 }
 
 interface ModalStore {

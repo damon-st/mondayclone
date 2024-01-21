@@ -6,6 +6,7 @@ import { SharedBoardModal } from "../modals/shared_board_modal";
 import { UploadFileModal } from "../modals/upload_file_modal";
 import { ModalActivitysTasks } from "../modals/modal_activitys_tasks";
 import { ModalTimesWorksTask } from "../modals/times-works-task-modal";
+import { ModalSettingsGroupTasks } from "../modals/moda_settings_group_tasks";
 
 export const ModalProvider = () => {
   const [mounted, setMounted] = useState(false);
@@ -23,6 +24,7 @@ export const ModalProvider = () => {
       <UploadFileModal />
       <ModalActivitysTasks />
       <ModalTimesWorksTask />
+      <ModalSettingsGroupTasks />
     </>
   );
 };

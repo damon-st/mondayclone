@@ -17,8 +17,9 @@ interface TaskFooterProps {
   tasks: (Tasks & {
     tasksTimesWorks: TasksTimesWorks[];
   })[];
+  priceForHour: number;
 }
-export const TaskFooter = ({ color, tasks }: TaskFooterProps) => {
+export const TaskFooter = ({ color, tasks, priceForHour }: TaskFooterProps) => {
   let fecha = "";
   let fechaRange = "-";
   let groupStatus: Array<CalculePercentageI> = [];
@@ -73,7 +74,7 @@ export const TaskFooter = ({ color, tasks }: TaskFooterProps) => {
         (pre, acc) => {
           const minutes = differenceInMinutes(acc.timeEnd!, acc.timeInit);
           const price = calculePriceWithMinutes(
-            5,
+            priceForHour,
             differenceInMinutes(acc.timeEnd!, acc.timeInit)
           );
 

@@ -24,12 +24,11 @@ export default async function BoardId({
     return redirect("/");
   }
 
-  board.boardUser;
-
   return (
     <div className="w-full h-full bg-white rounded-l-lg  p-2">
       <div className="w-full h-[15%] ">
         <HeadBoard
+          boardUser={board.boardUser}
           usersLength={board.boardUser.length}
           description={board.description}
           boardId={board.id}

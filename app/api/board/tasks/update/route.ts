@@ -126,7 +126,7 @@ export async function PUT(req: Request) {
         dateEnd = new Date();
 
         budget = calculePriceWithMinutes(
-          5,
+          task.groupTask.priceForHour,
           differenceInMinutes(dateEnd, task.dateInit)
         );
       }

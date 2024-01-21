@@ -5,10 +5,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { PaidGroupTask } from "@prisma/client";
+import { useModal } from "@/hooks/use_moda";
+import { GroupTasks, PaidGroupTask } from "@prisma/client";
 import axios from "axios";
 
-import { DollarSign, MoreHorizontal, Trash } from "lucide-react";
+import { DollarSign, MoreHorizontal, Settings, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import toast from "react-hot-toast";
@@ -17,13 +18,17 @@ interface OptionsGroupTaskProps {
   idGroup: string;
   paid: PaidGroupTask | null;
   boardId: string;
+  priceForHour: number;
+  groupTasks: GroupTasks;
 }
 
 export const OptionsGroupTask = ({
   idGroup,
   paid,
   boardId,
+  groupTasks,
 }: OptionsGroupTaskProps) => {
+  const { onOpen } = useModal();
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const onRemove = () => {
@@ -67,6 +72,13 @@ export const OptionsGroupTask = ({
     });
   };
 
+  const onDialogSettins = () => {
+    onOpen("settingsGroupTasks", {
+      groupTasks,
+      idBoard: boardId,
+    });
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="w-[3%]  items-center justify-center ">
@@ -77,6 +89,13 @@ export const OptionsGroupTask = ({
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
+        <DropdownMenuItem
+          onClick={onDialogSettins}
+          className="flex items-center space-x-2 cursor-pointer"
+        >
+          <Settings className="w-4 h-4" />
+          <p className="text-sm">Opciones</p>
+        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={onPaid}
           className="flex items-center space-x-2 cursor-pointer"

@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   nameWork: z.string().min(2),
@@ -59,6 +60,8 @@ export const EditNameDesSpaceWork = ({
       toast.error(`${error}`);
     }
   };
+
+  useEffect(() => {}, []);
 
   return (
     <Form {...form}>

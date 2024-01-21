@@ -55,6 +55,8 @@ model GroupTasks {
   expanded Boolean        @default(true)
   paid     PaidGroupTask?
 
+  priceForHour Float @default(5)
+
   boardId String
   board   Board  @relation(fields: [boardId], references: [id])
 

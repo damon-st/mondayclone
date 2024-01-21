@@ -1,5 +1,6 @@
 "use client";
-import { Check, Copy, Loader2 } from "lucide-react";
+import { Check, Copy, Loader2, X } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -31,6 +32,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import axios from "axios";
 import { ResponseModel } from "@/models/response_model";
+import { CustomToolpip } from "../custom_toltip";
 
 const formSchema = z.object({
   permitions: z.enum([PermitionsBoard.read, PermitionsBoard.readAndWrite]),
@@ -103,6 +105,23 @@ export function SharedBoardModal() {
             Cualquier persona con este link podra unirse a este tablero
           </DialogDescription>
         </DialogHeader>
+        {data?.usersBoard &&
+          data.usersBoard.map((v) => (
+            <div key={v.id} className=" flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Avatar>
+                  <AvatarImage src={v.photo ?? ""} />
+                  <AvatarFallback>{v.name.substring(0, 2)}</AvatarFallback>
+                </Avatar>
+                <p className="text-sm">{v.name}</p>
+              </div>
+              <div className="flex items-center justify-center">
+                <CustomToolpip msg="Eliminar participante">
+                  <X className="size-4" />
+                </CustomToolpip>
+              </div>
+            </div>
+          ))}
         {!valueURL.length && (
           <div className="w-full mt-2 mb-2">
             <Form {...form}>

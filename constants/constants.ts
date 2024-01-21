@@ -13,7 +13,6 @@ export const colorsGroupTaks = [
   "#ff5ac4",
   "#fdab3d",
   "#7f5347",
-  "#7f5347",
   "#808080",
 ];
 export const colorStatusTasks = {

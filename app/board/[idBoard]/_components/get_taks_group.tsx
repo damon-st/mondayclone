@@ -29,7 +29,13 @@ export const GetTaksGroup = async ({
       {groupTask.map((g) => (
         <div className="w-full  mt-2 mb-2" key={g.id}>
           <div className="group w-full flex  sticky top-0  bg-white z-30">
-            <OptionsGroupTask paid={g.paid} idGroup={g.id} boardId={boardId} />
+            <OptionsGroupTask
+              priceForHour={g.priceForHour}
+              paid={g.paid}
+              idGroup={g.id}
+              boardId={boardId}
+              groupTasks={g}
+            />
             <div className="w-[98%] ">
               <div className="w-full flex items-center space-x-2">
                 <ButtonColapseGroupTask
@@ -73,7 +79,11 @@ export const GetTaksGroup = async ({
                 <TaskInputCreate color={g.color} idGroupTasks={g.id} />
               </>
             )}
-            <TaskFooter tasks={g.tasks} color={g.color} />
+            <TaskFooter
+              tasks={g.tasks}
+              color={g.color}
+              priceForHour={g.priceForHour}
+            />
           </div>
         </div>
       ))}
