@@ -15,7 +15,8 @@ export type ModalType =
   | "timesWorkTask"
   | "settingsGroupTasks"
   | "infoBoard"
-  | "conversationTask";
+  | "conversationTask"
+  | "paidGroupTasks";
 
 interface BoardInfoM {
   boardUser: BoardUser[];

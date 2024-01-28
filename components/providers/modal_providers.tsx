@@ -9,6 +9,7 @@ import { ModalTimesWorksTask } from "../modals/times-works-task-modal";
 import { ModalSettingsGroupTasks } from "../modals/moda_settings_group_tasks";
 import { ModalInfoBoard } from "../modals/modal_info_board";
 import { ModalConversationTasks } from "../modals/modal-conversation_task/modal_conversation_task";
+import { ModalPaidGroupTasks } from "../modals/modal_paid/modal_paid_group_tasks";
 
 export const ModalProvider = () => {
   const [mounted, setMounted] = useState(false);
@@ -29,6 +30,7 @@ export const ModalProvider = () => {
       <ModalSettingsGroupTasks />
       <ModalInfoBoard />
       <ModalConversationTasks />
+      <ModalPaidGroupTasks />
     </>
   );
 };

@@ -52,23 +52,10 @@ export const OptionsGroupTask = ({
 
   const onPaid = () => {
     if (isPending) return;
-    startTransition(() => {
-      const existPaid = {
-        paid: paid == null ? true : !paid.paid,
-      };
-      const promise = axios.put("/api/board/group-tasks/update", {
-        boardId,
-        idTaks: idGroup,
-        paid: existPaid,
-      });
-      toast.promise(promise, {
-        loading: "Update data please waiting",
-        error: (e) => `Error: ${e}`,
-        success: () => {
-          router.refresh();
-          return "Udpate data succefully";
-        },
-      });
+    if (paid?.paid) return;
+    onOpen("paidGroupTasks", {
+      groupTasks: groupTasks,
+      idBoard: boardId,
     });
   };
 
@@ -101,7 +88,7 @@ export const OptionsGroupTask = ({
           className="flex items-center space-x-2 cursor-pointer"
         >
           <DollarSign className="w-4 h-4" />
-          <p className="text-sm">{paid?.paid ? "Quitar pagado" : "¿Pagado?"}</p>
+          <p className="text-sm">{paid?.paid ? "Grupo pagado" : "¿Pagado?"}</p>
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={onRemove}

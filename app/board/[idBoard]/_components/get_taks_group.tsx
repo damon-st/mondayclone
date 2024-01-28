@@ -51,12 +51,16 @@ export const GetTaksGroup = async ({
                   boardId={boardId}
                 />
                 {g.paid?.paid && (
-                  <div className="flex items-center space-x-2">
+                  <a
+                    href={g.paid.paidImgUrl}
+                    target="_blank"
+                    className="flex items-center space-x-2 hover:underline"
+                  >
                     <p className="text-lg">
                       {g.paid.paid ? "Se ha pagado este grupo" : ""}
                     </p>
                     <CheckCircle className="text-green-500 h-4 w-4" />
-                  </div>
+                  </a>
                 )}
               </div>
             </div>

@@ -68,8 +68,9 @@ model GroupTasks {
 }
 
 type PaidGroupTask {
-  paid      Boolean  @default(false)
-  createdAt DateTime @default(now())
+  paid       Boolean  @default(false)
+  paidImgUrl String
+  createdAt  DateTime @default(now())
 }
 
 model Tasks {
@@ -145,7 +146,7 @@ model ConversationsTasks {
   description String
 
   taskId String
-  task   Tasks  @relation(fields: [taskId], references: [id])
+  task   Tasks  @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
   userId String
   user   Users  @relation(fields: [userId], references: [id])
