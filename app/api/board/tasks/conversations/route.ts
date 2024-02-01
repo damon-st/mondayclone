@@ -77,3 +77,69 @@ export async function POST(req: Request) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
+export async function DELETE(req: Request) {
+  try {
+    const { userId } = auth();
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const { idTask, idConversation } = await req.json();
+    if (!idConversation) {
+      return new NextResponse("Params not found", { status: 404 });
+    }
+    if (!idTask) {
+      return new NextResponse("Params not found", { status: 404 });
+    }
+
+    const task = await db.tasks.findUnique({
+      where: {
+        id: idTask,
+      },
+      include: {
+        groupTask: {
+          include: {
+            board: {
+              include: {
+                boardUser: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    if (!task) {
+      return new NextResponse("Not exist task", { status: 404 });
+    }
+    const userBoard = task.groupTask.board.boardUser.find(
+      (v) => v.userId === userId
+    );
+    if (!userBoard) {
+      return new NextResponse("User not found", { status: 404 });
+    }
+    if (userBoard.permitions !== "readAndWrite") {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const deleteConver = await db.conversationsTasks.delete({
+      where: {
+        id: idConversation,
+      },
+    });
+
+    return NextResponse.json(
+      <ResponseModel<any>>{
+        data: deleteConver,
+        message: "success delete",
+        status: "success",
+        statusCode: 200,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.log("[ERROR_TASKS_CONVERSATION_DELETE]", error);
+
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}

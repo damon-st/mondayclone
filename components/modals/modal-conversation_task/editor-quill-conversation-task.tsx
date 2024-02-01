@@ -1,21 +1,32 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useEffect, useMemo, useState } from "react";
+import {
+  startTransition,
+  useEffect,
+  useMemo,
+  useState,
+  useTransition,
+} from "react";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import { SmileIcon } from "lucide-react";
 import { EmojiPickerPopover } from "@/components/emoji-popover";
 import { GiphyPopover } from "@/components/giphy-popover";
+import { ResponseModel } from "@/models/response_model";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 interface EditorQuillConversationTaksProps {
-  onSave: (value: string) => void;
-  disabled: boolean;
+  onSaveCon: (data: any) => void;
+  idTask: string;
 }
 
 export const EditorQuillConversationTaks = ({
-  disabled,
-  onSave,
+  onSaveCon,
+  idTask,
 }: EditorQuillConversationTaksProps) => {
+  const [isPending, startTransition] = useTransition();
+
   const ReactQuill = useMemo(
     () =>
       dynamic(() => import("react-quill"), {
@@ -63,6 +74,32 @@ export const EditorQuillConversationTaks = ({
     setValue((prev) => prev + `<img src="${gif} width="50" height="50" />`);
   };
 
+  const onSave = (value: string) => {
+    if (value.length < 2) {
+      toast.error("Please message is required");
+      return;
+    }
+    if (isPending) return;
+    startTransition(async () => {
+      try {
+        const result = await axios.post<ResponseModel<any>>(
+          "/api/board/tasks/conversations",
+          {
+            idTask: idTask,
+            description: value,
+          }
+        );
+        if (!result.data.data) {
+          throw new Error("Error un save");
+        }
+        onSaveCon(result.data.data);
+        setValue("");
+      } catch (error) {
+        toast.error(`Error: ${error}`);
+      }
+    });
+  };
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -98,7 +135,7 @@ export const EditorQuillConversationTaks = ({
         </div>
         <div className="flex items-center justify-end">
           <Button
-            disabled={disabled}
+            disabled={isPending}
             type="button"
             onClick={() => onSave(value)}
           >

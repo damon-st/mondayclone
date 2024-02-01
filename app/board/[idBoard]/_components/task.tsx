@@ -28,6 +28,7 @@ interface TaskProps {
   isLast: boolean;
   boardUsers: BoardUser[];
   currentUser: string;
+  coutConverTaks: number;
 }
 
 export const Task = ({
@@ -37,6 +38,8 @@ export const Task = ({
   isLast,
   boardUsers,
   currentUser,
+
+  coutConverTaks,
 }: TaskProps) => {
   const { onOpen } = useModal();
   const isFirst = index === 0;
@@ -81,13 +84,18 @@ export const Task = ({
                   title={taks.title}
                 />
               </div>
-              <div className="w-[20%] border-r border-grisHover h-10 flex items-center justify-center">
+              <div className="w-[20%] border-r border-grisHover h-10 flex items-center justify-center relative">
                 <CustomToolpip msg="Iniciar conversacion">
                   <MessageSquarePlusIcon
                     onClick={onOpenConversation}
                     className="w-4 h-4 cursor-pointer hover:text-azul"
                   />
                 </CustomToolpip>
+                {coutConverTaks !== 0 && (
+                  <span className="absolute size-4 text-xs bottom-1 right-5 pointer-events-none cursor-pointer rounded-full  bg-azul text-white flex items-center justify-center">
+                    {coutConverTaks}
+                  </span>
+                )}
               </div>
             </div>
           </div>

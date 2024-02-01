@@ -1,10 +1,25 @@
 "use client";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import { ConversationsTasks, Users } from "@prisma/client";
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bell, Clock, MoreHorizontal, Reply, ThumbsUp } from "lucide-react";
+import {
+  Bell,
+  Clock,
+  MoreHorizontal,
+  Reply,
+  ThumbsUp,
+  Trash,
+} from "lucide-react";
 import { formatDate, timeAgo, timeAgoInDays } from "@/lib/utils";
 import { CustomToolpip } from "@/components/custom_toltip";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -12,11 +27,13 @@ import { Skeleton } from "@/components/ui/skeleton";
 interface ConversationDescriptionProps {
   con: ConversationsTasks;
   user: Users;
+  onRemoveItem: () => void;
 }
 
 export const ConversationDescription = ({
   con,
   user,
+  onRemoveItem,
 }: ConversationDescriptionProps) => {
   const ReactQuill = useMemo(
     () =>
@@ -53,9 +70,24 @@ export const ConversationDescription = ({
             <div className="rounded-sm hover:bg-grisHover flex items-center justify-center p-2 cursor-pointer h-8">
               <Bell className="size-4" />
             </div>
-            <div className="rounded-sm hover:bg-grisHover flex items-center justify-center p-2 cursor-pointer h-8">
-              <MoreHorizontal className="size-4" />
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="rounded-sm hover:bg-grisHover flex items-center justify-center p-2 cursor-pointer h-8">
+                  <MoreHorizontal className="size-4" />
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Opciones</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={onRemoveItem}
+                  className="flex items-center space-x-2 cursor-pointer"
+                >
+                  <Trash size={15} />
+                  <span>Eliminar</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
         <div className="w-full">

@@ -71,6 +71,7 @@ export const GetTaksGroup = async ({
               <>
                 {g.tasks.map((t, index) => (
                   <Task
+                    coutConverTaks={t._count.conversationsTasks}
                     key={t.id}
                     taks={t}
                     color={g.color}

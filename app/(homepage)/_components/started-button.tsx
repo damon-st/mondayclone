@@ -7,7 +7,7 @@ interface StartedButtonProps {
 
 export default function StartedButton({ boardId }: StartedButtonProps) {
   return (
-    <Link href={`/board/${boardId}`} className="get-started-btn">
+    <Link href={`/board`} className="get-started-btn">
       Get Started
       <ArrowRight className="arrow" />
     </Link>

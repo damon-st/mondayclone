@@ -10,6 +10,11 @@ export const getGroupTaskByBoardId = (boardId: string) => {
         include: {
           files: true,
           tasksTimesWorks: true,
+          _count: {
+            select: {
+              conversationsTasks: true,
+            },
+          },
         },
       },
     },
