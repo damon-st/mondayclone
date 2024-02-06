@@ -5,6 +5,7 @@ import { MoreHorizontal } from "lucide-react";
 import { redirect } from "next/navigation";
 import { EditNameDesSpaceWork } from "./_components/edit_name_des_space";
 import { Tabs } from "./_components/tabs";
+import { MoreActionsSpaceWork } from "./_components/more-actions-space-work";
 
 interface SpaceWorkDetails {
   params: {
@@ -32,12 +33,10 @@ export default async function SpaceWorkDetails({ params }: SpaceWorkDetails) {
               userId={userId}
             />
           </div>
-          <div className="w-[10%] flex items-center justify-center">
-            <MoreHorizontal className="w-8 h-8" />
-          </div>
+          <MoreActionsSpaceWork spaceWork={spaceWork} />
         </div>
         <div className="w-full mt-2">
-          <Tabs boards={spaceWork.board} />
+          <Tabs spaceWork={spaceWork} boards={spaceWork.board} />
         </div>
       </div>
     </div>

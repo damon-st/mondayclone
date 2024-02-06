@@ -7,14 +7,18 @@ import { BoardItems } from "./borad_items";
 
 interface GetBoardsListProps {
   spaceWorkId: string;
+  idSpaceWork: string;
 }
-export const GetBoardsList = async ({ spaceWorkId }: GetBoardsListProps) => {
+export const GetBoardsList = async ({
+  spaceWorkId,
+  idSpaceWork,
+}: GetBoardsListProps) => {
   const { userId } = auth();
   const boards = await getBoardsBySpaceWorkId(spaceWorkId, userId ?? "");
   return (
     <div className="w-full p-1">
       {boards.map((v) => (
-        <BoardItems key={v.id} board={v} />
+        <BoardItems idSpaceWork={idSpaceWork} key={v.id} board={v} />
       ))}
     </div>
   );

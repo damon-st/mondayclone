@@ -9,9 +9,10 @@ import { usePathname } from "next/navigation";
 
 interface BoardItemsProps {
   board: Board;
+  idSpaceWork: string;
 }
 
-export const BoardItems = ({ board }: BoardItemsProps) => {
+export const BoardItems = ({ board, idSpaceWork }: BoardItemsProps) => {
   const pathName = usePathname();
 
   const isSelected = pathName === `/board/${board.id}`;
@@ -20,6 +21,7 @@ export const BoardItems = ({ board }: BoardItemsProps) => {
     <Link
       href={createRoute("board", {
         idBoard: board.id,
+        idSpaceWork: idSpaceWork,
       })}
       className={cn(
         "flex items-center p-2 rounded-sm hover:bg-grisHover overflow-hidden",

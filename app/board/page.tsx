@@ -1,52 +1,74 @@
-import { currentUser } from "@clerk/nextjs";
-import { Flashlight, MessageSquare } from "lucide-react";
-import Image from "next/image";
-import { GetWorksSpaces } from "./_components/get_works_spaces";
+import { ReactNode } from "react";
+import { auth, currentUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
+import { SpaceWork } from "@prisma/client";
+import {
+  createSpaceWork,
+  getOneSpacesWorkUser,
+} from "@/lib/services/work_pasce.service";
+import { createUserInfo, getUserInfo } from "@/lib/services/users.service";
+import { Skeleton } from "@/components/ui/skeleton";
+import { createRoute } from "@/routes/routes";
 
-export default async function BoardPage() {
-  const date = new Date();
-  const msg = date.getHours() >= 18 ? "!Buenas noches, " : "!Buenos dias, ";
+interface BoardPage {
+  children: ReactNode;
+}
+export const BoradPage = async ({ children }: BoardPage) => {
+  const { userId } = auth();
+
+  if (!userId) {
+    return redirect("/");
+  }
   const user = await currentUser();
+  let spacesWorks: SpaceWork | null = null;
+  spacesWorks = await getOneSpacesWorkUser(userId);
+
+  if (!spacesWorks) {
+    spacesWorks = await createSpaceWork({
+      descriptionWork: "",
+      nameWork: "Espacio de trabajo principal",
+      userId,
+    });
+  }
+
+  let userInfo = await getUserInfo(userId);
+  if (!userInfo) {
+    userInfo = await createUserInfo({
+      email: `${user?.emailAddresses[0].emailAddress}`,
+      name: `${user?.firstName} ${user?.lastName}`,
+      userId,
+      photo: user?.imageUrl,
+    });
+  }
+
+  return redirect(
+    createRoute("spaceWork", {
+      idSpaceWork: spacesWorks.id,
+    })
+  );
+};
+BoradPage.skeleton = function () {
   return (
-    <div className="bg-[#f6f7fb] rounded-l-lg w-full h-full relative">
-      <div className="w-full h-[10%] bg-white rounded-l-lg flex items-center">
-        <div className="w-[70%] h-full flex items-center justify-center">
-          <div className="w-full md:w-[60%] p-2">
-            <h2 className="text-xs md:text-lg">
-              {msg}
-              {user?.firstName}!
-            </h2>
-            <p className="text-xs">
-              Accede rápidamente a tus tableros recientes, el buzón y los
-              espacios de trabajo
-            </p>
-          </div>
-          <div className="hidden md:block w-[40%] h-full relative">
-            <Image
-              width={300}
-              height={600}
-              className="w-full h-full object-cover"
-              alt="navidad"
-              src="/navidad.svg"
-            />
-          </div>
+    <div className="w-full h-full bg-gris">
+      <div className="w-full h-[7%] flex justify-between">
+        <div className="flex space-x-2 items-center">
+          <Skeleton className="size-12" />
         </div>
-        <div className="hidden md:flex w-[30%] h-full  items-center justify-center gap-x-2">
-          <div className="flex gap-x-1">
-            <MessageSquare className="w-4 h-4" />
-            <p className="text-sm">Dejar comentarios</p>
-          </div>
-          <button className="bg-azul rounded-sm p-2 text-white flex items-center gap-x-1">
-            <Flashlight className="w-4 h-4" />
-            <p>Búsqueda rápida</p>
-          </button>
+        <div className="flex items-center">
+          <Skeleton className="size-12 rounded-full" />
         </div>
       </div>
-      <div className="w-full h-[89%] p-4 flex">
-        <div className="w-full md:w-[70%] bg-white h-[90%] rounded-lg">
-          <GetWorksSpaces userId={user?.id ?? ""} />
+      <div className="w-full h-[93%] flex">
+        <div className="w-[15%] hidden md:block">
+          <Skeleton className="w-full h-full rounded-sm" />
         </div>
+        <div className="w-[1%]"></div>
+        <section className="w-[99%] md:w-[84%] h-full">
+          <Skeleton className="w-full h-full" />
+        </section>
       </div>
     </div>
   );
-}
+};
+
+export default BoradPage;

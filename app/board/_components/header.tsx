@@ -8,14 +8,15 @@ import { SpaceWork } from "@prisma/client";
 
 interface HeaderProps {
   spacesWorks: SpaceWork;
+  userId: string;
 }
 
-export const Header = ({ spacesWorks }: HeaderProps) => {
+export const Header = ({ spacesWorks, userId }: HeaderProps) => {
   return (
     <header className="w-full p-1 md:p-2 h-[7%] bg-gris flex items-center justify-between">
       <div className="flex items-center space-x-4">
         <div className="md:hidden">
-          <MenuHeader spacesWorks={spacesWorks}>
+          <MenuHeader userId={userId} spacesWorks={spacesWorks}>
             <Grip className="w-8 h-8" />
           </MenuHeader>
         </div>

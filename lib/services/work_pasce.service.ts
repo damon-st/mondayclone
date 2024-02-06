@@ -27,6 +27,7 @@ export const createSpaceWork = async (data: CreateWorkSpaceI) => {
     data: {
       nameWork: data.nameWork,
       descriptionWork: data.descriptionWork,
+      userIdCreated: data.userId,
       usersIds: {
         set: [data.userId],
       },

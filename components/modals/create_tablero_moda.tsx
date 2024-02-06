@@ -76,6 +76,7 @@ export const CreateTableroModal = () => {
           startTransition(() => {
             const url = createRoute("board", {
               idBoard: d?.data?.data?.id,
+              idSpaceWork: data?.idSpaceWork,
             });
             setTimeout(() => {
               router.push(url);

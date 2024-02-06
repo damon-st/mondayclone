@@ -8,8 +8,12 @@ import Link from "next/link";
 
 interface GetWorksSpacesProps {
   userId: string;
+  idSpaceWork: string;
 }
-export const GetWorksSpaces = async ({ userId }: GetWorksSpacesProps) => {
+export const GetWorksSpaces = async ({
+  userId,
+  idSpaceWork,
+}: GetWorksSpacesProps) => {
   const spacesWorks = await getSpacesWorksUser(userId);
   return (
     <div className="w-full h-full overflow-y-auto p-3">
@@ -26,6 +30,7 @@ export const GetWorksSpaces = async ({ userId }: GetWorksSpacesProps) => {
             key={v.id}
             href={createRoute("spaceWorkDetails", {
               idSpace: v.id,
+              idSpaceWork: idSpaceWork,
             })}
             className="rounded-sm p-3 border flex items-center justify-start space-x-2 hover:shadow-lg hover:scale-105 transition duration-200"
           >

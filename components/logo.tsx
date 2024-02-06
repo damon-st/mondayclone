@@ -11,7 +11,7 @@ export const Logo = () => {
         src="/logo.png"
         alt="logo.png"
       />
-      <h2 className="logo-title">myday</h2>
+      <h2 className="logo-title">Monday</h2>
     </Link>
   );
 };

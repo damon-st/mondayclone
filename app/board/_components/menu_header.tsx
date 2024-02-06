@@ -13,14 +13,23 @@ import { Sidebar } from "./sidebar";
 interface MenuHeaderProps {
   children: ReactNode;
   spacesWorks: SpaceWork;
+  userId: string;
 }
 
-export const MenuHeader = ({ children, spacesWorks }: MenuHeaderProps) => {
+export const MenuHeader = ({
+  children,
+  spacesWorks,
+  userId,
+}: MenuHeaderProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>{children}</SheetTrigger>
       <SheetContent className="w-[90vw]" side="left">
-        <Sidebar spacesWorks={spacesWorks} />
+        <Sidebar
+          idSpaceWork={spacesWorks.id}
+          userId={userId}
+          spacesWorks={spacesWorks}
+        />
       </SheetContent>
     </Sheet>
   );

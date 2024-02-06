@@ -16,7 +16,8 @@ export type ModalType =
   | "settingsGroupTasks"
   | "infoBoard"
   | "conversationTask"
-  | "paidGroupTasks";
+  | "paidGroupTasks"
+  | "createSpaceWork";
 
 interface BoardInfoM {
   boardUser: BoardUser[];
@@ -45,6 +46,7 @@ interface DataModal {
   groupTasks?: GroupTasks;
   boardInfo?: BoardInfoM;
   taskConversationM?: TaskConversationM;
+  userId?: string;
 }
 
 interface ModalStore {
