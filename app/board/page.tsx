@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { auth, currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { SpaceWork } from "@prisma/client";
@@ -7,13 +6,9 @@ import {
   getOneSpacesWorkUser,
 } from "@/lib/services/work_pasce.service";
 import { createUserInfo, getUserInfo } from "@/lib/services/users.service";
-import { Skeleton } from "@/components/ui/skeleton";
 import { createRoute } from "@/routes/routes";
 
-interface BoardPage {
-  children: ReactNode;
-}
-export const BoradPage = async ({ children }: BoardPage) => {
+const BoradPage = async () => {
   const { userId } = auth();
 
   if (!userId) {
@@ -47,28 +42,4 @@ export const BoradPage = async ({ children }: BoardPage) => {
     })
   );
 };
-BoradPage.skeleton = function () {
-  return (
-    <div className="w-full h-full bg-gris">
-      <div className="w-full h-[7%] flex justify-between">
-        <div className="flex space-x-2 items-center">
-          <Skeleton className="size-12" />
-        </div>
-        <div className="flex items-center">
-          <Skeleton className="size-12 rounded-full" />
-        </div>
-      </div>
-      <div className="w-full h-[93%] flex">
-        <div className="w-[15%] hidden md:block">
-          <Skeleton className="w-full h-full rounded-sm" />
-        </div>
-        <div className="w-[1%]"></div>
-        <section className="w-[99%] md:w-[84%] h-full">
-          <Skeleton className="w-full h-full" />
-        </section>
-      </div>
-    </div>
-  );
-};
-
 export default BoradPage;

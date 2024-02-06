@@ -1,6 +1,4 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import React from "react";
-
 export default function LoadingPage() {
   return (
     <div className="w-full h-full bg-gris">
