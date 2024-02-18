@@ -39,6 +39,7 @@ export const ModalConversationTasks = () => {
 
   const fetchConversation = useCallback(async () => {
     try {
+      if (!data?.taskConversationM?.idTask) return;
       setLoadinConver(true);
       const response = await axios.get<ResponseModel<Array<ConversationsM>>>(
         `/api/board/tasks/conversations/${data?.taskConversationM?.idTask}`
